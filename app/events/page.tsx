@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState, FormEvent } from 'react';
 import { supabase } from '@/lib/supabase';
+import { ImagePlus } from 'lucide-react';
 
 type Ev = {
   id: string; title: string; event_date: string | null; kind: 'upcoming' | 'past';
@@ -106,7 +107,14 @@ export default function Events() {
               </label>
               <label>Description<textarea rows={3} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} /></label>
               <label>Facebook post link<input type="url" placeholder="https://facebook.com/..." value={form.fb_url} onChange={(e) => setForm({ ...form, fb_url: e.target.value })} /></label>
-              <label>Cover photo{editId && ' (leave empty to keep current)'}<input type="file" accept="image/*" onChange={(e) => setFile(e.target.files?.[0] ?? null)} /></label>
+              <div className="filepick">
+  <span>Cover photo{editId && ' (leave empty to keep current)'}</span>
+  <label className="filebtn">
+    <ImagePlus size={20} />
+    <span>{file ? file.name : 'Add photo'}</span>
+    <input type="file" accept="image/*" hidden onChange={(e) => setFile(e.target.files?.[0] ?? null)} />
+  </label>
+</div>
               <div className="row">
                 <button className="btn">{editId ? 'Save changes' : 'Add event'}</button>
                 {editId && <button type="button" className="link-btn" onClick={() => { setEditId(null); setForm(empty); }}>Cancel edit</button>}
@@ -122,9 +130,22 @@ export default function Events() {
       {upcoming.length === 0 && <p className="muted">No upcoming events yet. Check back soon.</p>}
       <div className="list">
         {upcoming.map((ev) => (
-          <article className="upcoming" key={ev.id}>
+                  <article className="upcoming" key={ev.id}>
             <time>{fmt(ev.event_date)}</time>
             <div><h3>{ev.title}</h3><p>{ev.description}</p><AdminBar ev={ev} /></div>
+            {ev.image_url && (
+              <div className="up-img">
+                {ev.fb_url ? (
+                  <a href={ev.fb_url} target="_blank" rel="noopener noreferrer">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={ev.image_url} alt={ev.title} />
+                  </a>
+                ) : (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={ev.image_url} alt={ev.title} />
+                )}
+              </div>
+            )}
           </article>
         ))}
       </div>
@@ -137,7 +158,11 @@ export default function Events() {
             <>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               {ev.image_url ? <img src={ev.image_url} alt={ev.title} /> : <div className="ph" />}
-              <div className="cap"><b>{ev.title}</b><span>{fmt(ev.event_date)}</span></div>
+                           <div className="cap">
+                <b>{ev.title}</b>
+                <span>{fmt(ev.event_date)}</span>
+                {ev.description && <p>{ev.description}</p>}
+              </div>
             </>
           );
           return (

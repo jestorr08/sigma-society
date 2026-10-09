@@ -2,10 +2,15 @@
   "name": "sigma-society",
   "version": "1.0.0",
   "private": true,
-  "scripts": { "dev": "next dev", "build": "next build", "start": "next start" },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
   "dependencies": {
     "@supabase/supabase-js": "^2.45.0",
-    "next": "14.2.15",
+    "lucide-react": "^1.53.0",
+    "next": "^16.4.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },

@@ -2,6 +2,7 @@
 import { useState, FormEvent, ChangeEvent } from 'react';
 import { supabase } from '@/lib/supabase';
 import LanyardCard, { IdData } from '@/components/LanyardCard';
+import { Camera } from 'lucide-react';
 
 const blank = { full_name: '', student_id: '', program: '', year_level: '1st Year', section: '', email: '', phone: '' };
 
@@ -68,7 +69,14 @@ export default function Membership() {
         </div>
         <label>Email<input type="email" required value={f.email} onChange={set('email')} /></label>
         <label>Mobile number<input type="tel" value={f.phone} onChange={set('phone')} /></label>
-        <label>Photo (max 2MB)<input type="file" accept="image/*" onChange={pick} /></label>
+       <div className="filepick">
+  <span>Photo (max 2MB)</span>
+  <label className="filebtn">
+    <Camera size={20} />
+    <span>{file ? file.name : 'Upload photo'}</span>
+    <input type="file" accept="image/*" hidden onChange={pick} />
+  </label>
+</div>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         {preview && <img className="thumb" src={preview} alt="Preview" />}
         {err && <p className="error">{err}</p>}
