@@ -256,3 +256,6 @@ a{color:inherit;text-decoration:none}
   .hero-btns .btn{text-align:center}
 }
 @media(prefers-reduced-motion:reduce){.hero-fig,.hero-fig::before,.hero-fig::after{animation:none}}
+
+.row-between:has(.page-title){margin-bottom:28px}
+@media(max-width:720px){.row-between:has(.page-title){margin-bottom:40px}}
