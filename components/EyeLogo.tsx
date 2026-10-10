@@ -17,6 +17,7 @@ export default function EyeLogo({ src = '/sigma-logo.png' }: { src?: string }) {
 
     const onMove = (e: PointerEvent) => { mx = e.clientX; my = e.clientY; lastMove = performance.now(); };
     window.addEventListener('pointermove', onMove);
+    window.addEventListener('pointerdown', onMove);
 
     const tick = (t: number) => {
       const idle = t - lastMove > 1500;
@@ -53,6 +54,7 @@ export default function EyeLogo({ src = '/sigma-logo.png' }: { src?: string }) {
     return () => {
       cancelAnimationFrame(raf); clearTimeout(bt);
       window.removeEventListener('pointermove', onMove);
+      window.removeEventListener('pointerdown', onMove);
     };
   }, []);
 

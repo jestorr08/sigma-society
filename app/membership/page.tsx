@@ -2,7 +2,8 @@
 import { useState, FormEvent, ChangeEvent } from 'react';
 import { supabase } from '@/lib/supabase';
 import LanyardCard, { IdData } from '@/components/LanyardCard';
-import { Camera } from 'lucide-react';
+import { Camera, ChevronDown } from 'lucide-react';
+import Reveal from '@/components/Reveal';
 
 const blank = { full_name: '', student_id: '', program: '', year_level: '1st Year', section: '', email: '', phone: '' };
 
@@ -44,44 +45,49 @@ export default function Membership() {
   if (done)
     return (
       <div className="wrap section center">
-        <h1 className="page-title">Welcome to SIGMA, {done.full_name.split(' ')[0]}.</h1>
-        <p className="muted">Your membership ID is ready. Drag the card to give it a swing.</p>
-        <LanyardCard d={done} />
+        <Reveal as="h1" className="page-title">Welcome to SIGMA, {done.full_name.split(' ')[0]}.</Reveal>
+        <Reveal as="p" className="muted" delay={100}>Your membership ID is ready. Drag the card to give it a swing.</Reveal>
+        <Reveal delay={200}><LanyardCard d={done} /></Reveal>
         <button className="link-btn" onClick={() => { setDone(null); setF(blank); setFile(null); setPreview(''); }}>Register another member</button>
       </div>
     );
 
   return (
     <div className="wrap section narrow">
-      <h1 className="page-title">Become a member</h1>
-      <p className="muted">Fill in your details. Your ID is generated as soon as you submit.</p>
-      <form onSubmit={submit} className="form">
-        <label>Full name<input required value={f.full_name} onChange={set('full_name')} /></label>
-        <label>Student ID number<input required value={f.student_id} onChange={set('student_id')} /></label>
-        <label>Program / course<input required placeholder="e.g. BS Statistics" value={f.program} onChange={set('program')} /></label>
-        <div className="row2">
-          <label>Year level
+      <Reveal as="h1" className="page-title">Become a member</Reveal>
+      <Reveal as="p" className="muted" delay={100}>Fill in your details. Your ID is generated as soon as you submit.</Reveal>
+      <Reveal delay={200}>
+        <form onSubmit={submit} className="form">
+          <label>Full name<input required value={f.full_name} onChange={set('full_name')} /></label>
+          <label>Student ID number<input required value={f.student_id} onChange={set('student_id')} /></label>
+          <label>Program / course<input required placeholder="e.g. BSIT" value={f.program} onChange={set('program')} /></label>
+          <div className="row2">
+               <label>Year level
+           <span className="selwrap">
             <select value={f.year_level} onChange={set('year_level')}>
-              {['1st Year', '2nd Year', '3rd Year', '4th Year', '5th Year'].map((y) => <option key={y}>{y}</option>)}
-            </select>
+               {['1st Year', '2nd Year', '3rd Year', '4th Year', '5th Year'].map((y) => <option key={y}>{y}</option>)}
+           </select>
+          <ChevronDown size={18} />
+            </span>
           </label>
-          <label>Section<input value={f.section} onChange={set('section')} /></label>
-        </div>
-        <label>Email<input type="email" required value={f.email} onChange={set('email')} /></label>
-        <label>Mobile number<input type="tel" value={f.phone} onChange={set('phone')} /></label>
-       <div className="filepick">
-  <span>Photo (max 2MB)</span>
-  <label className="filebtn">
-    <Camera size={20} />
-    <span>{file ? file.name : 'Upload photo'}</span>
-    <input type="file" accept="image/*" hidden onChange={pick} />
-  </label>
-</div>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        {preview && <img className="thumb" src={preview} alt="Preview" />}
-        {err && <p className="error">{err}</p>}
-        <button className="btn" disabled={busy}>{busy ? 'Submitting…' : 'Submit and get my ID'}</button>
-      </form>
+            <label>Section<input value={f.section} onChange={set('section')} /></label>
+          </div>
+          <label>Email<input type="email" required value={f.email} onChange={set('email')} /></label>
+          <label>Mobile number<input type="tel" value={f.phone} onChange={set('phone')} /></label>
+          <div className="filepick">
+            <span>Photo (max 2MB)</span>
+            <label className="filebtn">
+              <Camera size={20} />
+              <span>{file ? file.name : 'Upload photo'}</span>
+              <input type="file" accept="image/*" hidden onChange={pick} />
+            </label>
+          </div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          {preview && <img className="thumb" src={preview} alt="Preview" />}
+          {err && <p className="error">{err}</p>}
+          <button className="btn" disabled={busy}>{busy ? 'Submitting…' : 'Submit and get my ID'}</button>
+        </form>
+      </Reveal>
     </div>
   );
 }

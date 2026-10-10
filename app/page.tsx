@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { ORG, OFFICERS } from '@/lib/config';
 import EyeLogo from '@/components/EyeLogo';
+import Reveal from '@/components/Reveal';
+import RecentEvents from '@/components/RecentEvents';
 
 function Avatar({ name, photo }: { name?: string; photo?: string }) {
   // eslint-disable-next-line @next/next/no-img-element
@@ -21,51 +23,53 @@ export default function Home() {
         <a href="#about" className="btn ghost">Learn more</a>
       </div>
     </div>
-    <EyeLogo />
+   <div className="hero-fig"><EyeLogo /></div>
   </div>
 </section>
 
-     <section id="about" className="section wrap two">
-        <div>
-          <h2>What SIGMA is about</h2>
-          <p>{ORG.about}</p>
-        </div>
-        <div>
-          <h2>Our goals</h2>
-          <ul className="goals">{ORG.goals.map((g) => <li key={g}>{g}</li>)}</ul>
-        </div>
-      </section>
+     <Reveal as="section" id="about" className="section wrap two">
+  <div>
+    <h2>What SIGMA is about</h2>
+    <p>{ORG.about}</p>
+  </div>
+  <div>
+    <h2>Our goals</h2>
+    <ul className="goals">{ORG.goals.map((g) => <li key={g}>{g}</li>)}</ul>
+  </div>
+</Reveal>
+
+<RecentEvents />
 
 <section className="section wrap">
-  <h2>Executive Officers</h2>
+  <Reveal as="h2">Executive Officers</Reveal>
   <div className="grid officers">
-    <div className="ocard">
+    <Reveal className="ocard">
       <Avatar name={ORG.adviser.name} photo={ORG.adviser.photo} />
       <div className="ocap">
         <b>{ORG.adviser.name}</b>
         <span>{ORG.adviser.title}</span>
       </div>
-    </div>
-    {OFFICERS.map((o) => (
-      <div className="ocard" key={o.role}>
+    </Reveal>
+    {OFFICERS.map((o, i) => (
+      <Reveal className="ocard" key={o.role} delay={((i + 1) % 3) * 120}>
         <Avatar name={o.name} photo={o.photo} />
         <div className="ocap">
           <b>{o.name}</b>
           <span>{o.role}</span>
         </div>
-      </div>
+      </Reveal>
     ))}
   </div>
 </section>
 
      
 
-      <section className="cta">
-        <div className="wrap">
-          <h2>Ready to be part of SIGMA?</h2>
-          <Link href="/membership" className="btn invert">Become a member</Link>
-        </div>
-      </section>
+ <Reveal as="section" className="cta">
+  <div className="wrap">
+    <h2>Ready to be part of SIGMA?</h2>
+    <Link href="/membership" className="btn invert">Become a member</Link>
+  </div>
+</Reveal>
     </>
   );
 }

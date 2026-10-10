@@ -147,3 +147,115 @@ a{color:inherit;text-decoration:none}
 .hero .lead{color:#fff}
 .hero .eyelogo{box-shadow:0 0 0 12px rgba(255,255,255,.10),0 0 90px 28px rgba(190,40,60,.5),0 24px 50px rgba(0,0,0,.55)}
 .footer{color:#e9e4e4}
+
+.cta{background:none;color:var(--ink);}
+.cta h2{color:var(--maroon)}
+.cta .btn.invert{background:var(--btn);color:#fff}
+.cta .btn.invert:hover{background:var(--btn-d)}
+
+/* ---- Hero entrance (plays on load / refresh) ---- */
+@keyframes rise{from{opacity:0;translate:0 36px}to{opacity:1;translate:0 0}}
+.hero-text>*,.hero .eyelogo{animation:rise .9s cubic-bezier(.22,1,.36,1) both}
+.hero-text>:nth-child(1){animation-delay:.1s}
+.hero-text>:nth-child(2){animation-delay:.25s}
+.hero-text>:nth-child(3){animation-delay:.4s}
+.hero .eyelogo{animation-delay:.3s}
+
+/* ---- Scroll reveal (plays once when first scrolled into view) ---- */
+.reveal{opacity:0;translate:0 40px;transition:opacity .8s cubic-bezier(.22,1,.36,1),translate .8s cubic-bezier(.22,1,.36,1)}
+.reveal.in{opacity:1;translate:0 0}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;translate:none}.hero-text>*,.hero .eyelogo{animation:none}}
+
+.gal-title{margin-top:56px}
+.ehero-in>*{animation:rise .9s cubic-bezier(.22,1,.36,1) both}
+.ehero-in>:nth-child(2){animation-delay:.25s}
+@media(prefers-reduced-motion:reduce){.ehero-in>*{animation:none}}
+
+.selwrap{position:relative;display:block}
+.selwrap select{width:100%;appearance:none;-webkit-appearance:none;padding-right:40px;cursor:pointer}
+.selwrap svg{position:absolute;right:12px;top:50%;translate:0 -50%;color:var(--maroon);pointer-events:none;transition:transform .2s}
+.selwrap:focus-within svg{transform:rotate(180deg)}
+
+/* ---- Nav sits on top of the hero ---- */
+.nav{transition:background .3s,border-color .3s}
+.hero{margin-top:-65px;padding-top:calc(96px + 65px)}
+@media(max-width:720px){.hero{padding-top:calc(64px + 65px)}}
+
+
+
+/* ---- Dark mode: the whole page uses the hero's wine gradient ---- */
+:root[data-theme="dark"]{--maroon:#f3e9ea}
+[data-theme="dark"] body{background:linear-gradient(115deg,#16040a 0%,#3a0a15 48%,#6b1624 100%) fixed}
+[data-theme="dark"] .hero,[data-theme="dark"] .ehero{background:transparent}
+
+/* nav, footer, cards, inputs become soft glass */
+[data-theme="dark"] .nav{border-bottom-color:rgba(255,255,255,.08)}
+[data-theme="dark"] .nav:not(.nav-top){background:rgba(22,4,10,.65)}
+[data-theme="dark"] .footer{background:rgba(0,0,0,.28);border-top:1px solid rgba(255,255,255,.08)}
+[data-theme="dark"] .ocard,[data-theme="dark"] .panel{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.12)}
+[data-theme="dark"] .form input,[data-theme="dark"] .form select,[data-theme="dark"] .form textarea,[data-theme="dark"] .filebtn{background:rgba(0,0,0,.25);border-color:rgba(255,255,255,.14)}
+
+/* buttons turn white so they stand out on the wine background */
+[data-theme="dark"] .btn,[data-theme="dark"] .cta .btn.invert{background:#fff;color:#6b1624}
+[data-theme="dark"] .btn:hover,[data-theme="dark"] .cta .btn.invert:hover{background:#f1dfe2}
+[data-theme="dark"] .btn.ghost{background:transparent;color:#fff}
+[data-theme="dark"] .btn.ghost:hover{background:rgba(255,255,255,.14)}
+
+/* ---- Nav blends with the page at the top (all pages) ---- */
+.nav-top{background:transparent;border-bottom-color:transparent;-webkit-backdrop-filter:none;backdrop-filter:none}
+
+/* ---- Light mode: white hero ---- */
+:root:not([data-theme="dark"]) .hero{background:transparent;color:var(--ink)}
+:root:not([data-theme="dark"]) .hero h1{color:var(--maroon)}
+:root:not([data-theme="dark"]) .hero .lead{color:var(--muted)}
+:root:not([data-theme="dark"]) .hero .btn.invert{background:var(--btn);color:#fff}
+:root:not([data-theme="dark"]) .hero .btn.invert:hover{background:var(--btn-d)}
+:root:not([data-theme="dark"]) .hero .btn.ghost{border-color:var(--maroon);color:var(--maroon)}
+:root:not([data-theme="dark"]) .hero .btn.ghost:hover{background:var(--tint)}
+:root:not([data-theme="dark"]) .hero .eyelogo{border-color:var(--btn);box-shadow:0 24px 60px rgba(122,20,38,.28)}
+
+.sm-h{font-size:1.4rem}
+.mq{margin-top:18px;padding:6px 0;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+.mq-track{display:flex;width:max-content;animation:mq 40s linear infinite}
+.mq:hover .mq-track{animation-play-state:paused}
+.mq.still .mq-track{animation:none;width:auto;flex-wrap:wrap;row-gap:18px}
+@keyframes mq{to{transform:translateX(-50%)}}
+
+.ecard{flex:0 0 250px;margin-right:18px;display:block;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--tint);transition:transform .25s,border-color .25s}
+.ecard:hover{transform:translateY(-4px);border-color:var(--maroon)}
+.ecard img,.ecard-ph{width:100%;aspect-ratio:16/10;object-fit:cover;display:block;background:linear-gradient(115deg,#3a0a15,#6b1624)}
+.ecard-ph{display:grid;place-items:center;font-family:var(--serif),serif;font-size:2.4rem;color:rgba(255,255,255,.25)}
+.ecard-body{padding:12px 14px;display:flex;flex-direction:column;gap:2px}
+.ecard-body time{font-size:.78rem;color:var(--muted)}
+.ecard-body b{font-size:.98rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+[data-theme="dark"] .ecard{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.12)}
+@media(max-width:720px){.ecard{flex-basis:210px}}
+@media(prefers-reduced-motion:reduce){.mq-track{animation:none}.mq{overflow-x:auto}}
+
+/* ---- Hero logo: motion + rings ---- */
+.hero-fig{position:relative;flex:0 0 auto;line-height:0;transform:translateX(60px);--ring:rgba(255,255,255,.4);animation:rise .9s cubic-bezier(.22,1,.36,1) .3s both,bob 6s ease-in-out 1.4s infinite}
+:root:not([data-theme="dark"]) .hero-fig{--ring:rgba(122,20,38,.4)}
+.hero .eyelogo{transform:none;animation:none}
+.hero-fig::before,.hero-fig::after{content:'';position:absolute;border-radius:50%;pointer-events:none}
+.hero-fig::before{inset:-16px;border:2px dashed var(--ring);animation:spin 40s linear infinite}
+.hero-fig::after{inset:-36px;border:1px solid var(--ring);background:radial-gradient(circle at 50% 0,var(--ring) 0 5px,transparent 6px);animation:spin 14s linear infinite}
+@keyframes bob{50%{translate:0 -12px}}
+@keyframes spin{to{rotate:360deg}}
+
+@media(max-width:1100px){.hero-fig{transform:none}.hero .eyelogo{width:300px}}
+
+/* ---- Tablet + phone: logo on top, everything centered ---- */
+@media(max-width:900px){
+  .hero{padding-top:calc(40px + 65px);padding-bottom:56px}
+  .hero-in{flex-direction:column;align-items:center;text-align:center;gap:44px}
+  .hero-fig{order:-1}
+  .hero .eyelogo{width:240px;box-shadow:0 0 40px 8px rgba(190,40,60,.5),0 14px 30px rgba(0,0,0,.5)}
+  .hero .lead{margin-inline:auto}
+  .hero-btns{justify-content:center}
+}
+@media(max-width:480px){
+  .hero .eyelogo{width:200px}
+  .hero-btns{flex-direction:column;align-items:stretch;width:100%;max-width:280px;margin-inline:auto}
+  .hero-btns .btn{text-align:center}
+}
+@media(prefers-reduced-motion:reduce){.hero-fig,.hero-fig::before,.hero-fig::after{animation:none}}

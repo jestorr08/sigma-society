@@ -15,9 +15,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-   <html lang="en" suppressHydrationWarning>
+   <html lang="en" data-theme="dark" suppressHydrationWarning>
   <head>
-    <script dangerouslySetInnerHTML={{ __html: "try{document.documentElement.dataset.theme=localStorage.getItem('theme')==='dark'?'dark':'light'}catch(e){document.documentElement.dataset.theme='light'}" }} />
+    <script dangerouslySetInnerHTML={{ __html: "try{document.documentElement.dataset.theme=localStorage.getItem('theme')==='light'?'light':'dark'}catch(e){document.documentElement.dataset.theme='dark'}" }} />
   </head>
   <body className={`${serif.variable} ${sans.variable} ${display.variable}`}>
     <Navbar />

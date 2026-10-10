@@ -2,6 +2,7 @@
 import { useEffect, useState, FormEvent } from 'react';
 import { supabase } from '@/lib/supabase';
 import { ImagePlus } from 'lucide-react';
+import Reveal from '@/components/Reveal';
 
 type Ev = {
   id: string; title: string; event_date: string | null; kind: 'upcoming' | 'past';
@@ -71,8 +72,10 @@ export default function Events() {
     load();
   }
 
-  const upcoming = events.filter((e) => e.kind === 'upcoming').reverse();
-  const past = events.filter((e) => e.kind === 'past');
+  const today = new Date().toLocaleDateString('en-CA'); // YYYY-MM-DD, local time
+  const isPast = (e: Ev) => e.kind === 'past' || (!!e.event_date && e.event_date < today);
+  const upcoming = events.filter((e) => !isPast(e)).reverse();
+  const past = events.filter(isPast);
   const AdminBar = ({ ev }: { ev: Ev }) =>
     isAdmin ? (
       <div className="admin-bar">
@@ -84,10 +87,11 @@ export default function Events() {
   return (
     <div className="wrap section">
       <div className="row-between">
-        <h1 className="page-title">Events</h1>
-         {isAdmin && <button className="link-btn" onClick={() => setPanel(!panel)}>Manage events</button>}      </div>
+        <Reveal as="h1" className="page-title">Events</Reveal>
+        {isAdmin && <button className="link-btn" onClick={() => setPanel(!panel)}>Manage events</button>}
+      </div>
 
-     {panel && isAdmin && (
+      {panel && isAdmin && (
         <div className="panel">
           {!isAdmin ? (
             <form onSubmit={signIn} className="form">
@@ -108,13 +112,13 @@ export default function Events() {
               <label>Description<textarea rows={3} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} /></label>
               <label>Facebook post link<input type="url" placeholder="https://facebook.com/..." value={form.fb_url} onChange={(e) => setForm({ ...form, fb_url: e.target.value })} /></label>
               <div className="filepick">
-  <span>Cover photo{editId && ' (leave empty to keep current)'}</span>
-  <label className="filebtn">
-    <ImagePlus size={20} />
-    <span>{file ? file.name : 'Add photo'}</span>
-    <input type="file" accept="image/*" hidden onChange={(e) => setFile(e.target.files?.[0] ?? null)} />
-  </label>
-</div>
+                <span>Cover photo{editId && ' (leave empty to keep current)'}</span>
+                <label className="filebtn">
+                  <ImagePlus size={20} />
+                  <span>{file ? file.name : 'Add photo'}</span>
+                  <input type="file" accept="image/*" hidden onChange={(e) => setFile(e.target.files?.[0] ?? null)} />
+                </label>
+              </div>
               <div className="row">
                 <button className="btn">{editId ? 'Save changes' : 'Add event'}</button>
                 {editId && <button type="button" className="link-btn" onClick={() => { setEditId(null); setForm(empty); }}>Cancel edit</button>}
@@ -126,11 +130,11 @@ export default function Events() {
         </div>
       )}
 
-      <h2>Upcoming</h2>
+      <Reveal as="h2" delay={100}>Upcoming</Reveal>
       {upcoming.length === 0 && <p className="muted">No upcoming events yet. Check back soon.</p>}
       <div className="list">
         {upcoming.map((ev) => (
-                  <article className="upcoming" key={ev.id}>
+          <Reveal as="article" className="upcoming" key={ev.id}>
             <time>{fmt(ev.event_date)}</time>
             <div><h3>{ev.title}</h3><p>{ev.description}</p><AdminBar ev={ev} /></div>
             {ev.image_url && (
@@ -146,19 +150,19 @@ export default function Events() {
                 )}
               </div>
             )}
-          </article>
+          </Reveal>
         ))}
       </div>
 
-      <h2 style={{ marginTop: 56 }}>Gallery</h2>
+      <Reveal as="h2" className="gal-title">Gallery</Reveal>
       {past.length === 0 && <p className="muted">Photos from our past events will appear here.</p>}
       <div className="grid gallery">
-        {past.map((ev) => {
+        {past.map((ev, i) => {
           const inner = (
             <>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               {ev.image_url ? <img src={ev.image_url} alt={ev.title} /> : <div className="ph" />}
-                           <div className="cap">
+              <div className="cap">
                 <b>{ev.title}</b>
                 <span>{fmt(ev.event_date)}</span>
                 {ev.description && <p>{ev.description}</p>}
@@ -166,10 +170,10 @@ export default function Events() {
             </>
           );
           return (
-            <div className="shot" key={ev.id}>
+            <Reveal className="shot" key={ev.id} delay={(i % 3) * 120}>
               {ev.fb_url ? <a href={ev.fb_url} target="_blank" rel="noopener noreferrer">{inner}</a> : <div>{inner}</div>}
               <AdminBar ev={ev} />
-            </div>
+            </Reveal>
           );
         })}
       </div>
