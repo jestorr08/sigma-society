@@ -57,12 +57,10 @@ export async function downloadId(d: IdData) {
 
   c.fillStyle = '#2b1a1f'; c.beginPath(); c.arc(135, 123, 65, 0, Math.PI * 2); c.fill();
   c.strokeStyle = 'rgba(179,32,58,.4)'; c.lineWidth = 4; c.beginPath(); c.arc(135, 123, 67, 0, Math.PI * 2); c.stroke();
-  c.save(); c.beginPath(); c.arc(135, 123, 61, 0, Math.PI * 2); c.clip();
-  if (photo) {
-    const s = Math.max(122 / photo.width, 122 / photo.height);
-    c.drawImage(photo, 135 - (photo.width * s) / 2, 123 - (photo.height * s) / 2, photo.width * s, photo.height * s);
-  }
-  c.restore();
+ if (logo) {
+  const k = Math.min(34 / logo.width, 34 / logo.height);
+  c.drawImage(logo, 33 - (logo.width * k) / 2, 222 - (logo.height * k) / 2, logo.width * k, logo.height * k);
+}
 
   c.save(); c.beginPath(); c.arc(33, 222, 17, 0, Math.PI * 2); c.clip();
   c.fillStyle = '#fff'; c.fillRect(16, 205, 34, 34);

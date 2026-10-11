@@ -377,3 +377,5 @@ select option:disabled{color:var(--muted)}
 .idc-id{left:14px;right:14px;top:384px;padding-top:10px;border-top:1px solid rgba(255,255,255,.14);text-align:center}
 .idc-id b{display:block;font-size:.72rem;letter-spacing:.1em;color:#e58a99}
 .idc-id small{display:block;margin-top:6px;font-size:.52rem;letter-spacing:.14em;opacity:.55}
+
+.idc-logo{background:none;border-radius:0;object-fit:contain}
