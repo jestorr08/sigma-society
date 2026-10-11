@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
-import { ChevronDown } from 'lucide-react';
+
 
 export default function ScrollHint() {
   const [show, setShow] = useState(false);
@@ -27,7 +27,7 @@ export default function ScrollHint() {
   return (
     <div className={show ? 'scrollhint show' : 'scrollhint'} aria-hidden="true">
       <span>Scroll</span>
-      <ChevronDown size={20} />
+     <i />
     </div>
   );
 }

@@ -267,3 +267,14 @@ a{color:inherit;text-decoration:none}
 }
 @keyframes nudge{50%{transform:translateY(5px)}}
 @media(prefers-reduced-motion:reduce){.scrollhint svg{animation:none}}
+
+.scrollhint{display:none}
+@media(max-width:900px){
+  .scrollhint{position:fixed;left:50%;bottom:18px;translate:-50% 0;z-index:20;display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--ink);pointer-events:none;opacity:0;transition:opacity .4s;text-shadow:0 0 8px var(--bg),0 0 16px var(--bg)}
+  .scrollhint.show{opacity:1}
+  .scrollhint span{font-size:.68rem;letter-spacing:.3em;text-transform:uppercase;padding-left:.3em}
+  .scrollhint i{position:relative;display:block;width:2px;height:40px;border-radius:2px;overflow:hidden;background:color-mix(in srgb,var(--ink) 25%,transparent)}
+  .scrollhint i::after{content:'';position:absolute;left:0;top:-50%;width:100%;height:50%;border-radius:2px;background:var(--ink);animation:drip 1.7s cubic-bezier(.6,0,.4,1) infinite}
+}
+@keyframes drip{from{top:-50%}to{top:100%}}
+@media(prefers-reduced-motion:reduce){.scrollhint i::after{animation:none;top:0}}
