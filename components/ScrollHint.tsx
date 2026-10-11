@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
-
+import { ChevronDown } from 'lucide-react';
 
 export default function ScrollHint() {
   const [show, setShow] = useState(false);
@@ -8,14 +8,14 @@ export default function ScrollHint() {
 
   useEffect(() => {
     const check = () => {
-      if (window.scrollY > 30) done.current = true; // hidden for good once they scroll
+      if (window.scrollY > 30) done.current = true;
       const scrollable = document.documentElement.scrollHeight > window.innerHeight + 60;
       setShow(!done.current && scrollable);
     };
     check();
     window.addEventListener('scroll', check, { passive: true });
     window.addEventListener('resize', check);
-    const ro = new ResizeObserver(check); // events load after the page, so re-check as content grows
+    const ro = new ResizeObserver(check);
     ro.observe(document.body);
     return () => {
       window.removeEventListener('scroll', check);
@@ -26,8 +26,9 @@ export default function ScrollHint() {
 
   return (
     <div className={show ? 'scrollhint show' : 'scrollhint'} aria-hidden="true">
-      <span>Scroll</span>
-     <i />
+      <span>Scroll down</span>
+      <ChevronDown size={16} />
+      <ChevronDown size={16} />
     </div>
   );
 }
