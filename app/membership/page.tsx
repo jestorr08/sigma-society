@@ -2,12 +2,15 @@
 import { useState, FormEvent, ChangeEvent } from 'react';
 import { supabase } from '@/lib/supabase';
 import LanyardCard, { IdData } from '@/components/LanyardCard';
-import { Camera, ChevronDown } from 'lucide-react';
 import Reveal from '@/components/Reveal';
+import { useRouter } from 'next/navigation';
+import { Camera, ChevronDown, Download } from 'lucide-react';
+import { downloadId } from '@/lib/idCard';
 
 const blank = { full_name: '', student_id: '', program: '', year_level: '1st Year', section: '', email: '', phone: '' };
 
 export default function Membership() {
+  const router = useRouter();
   const [f, setF] = useState(blank);
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState('');
@@ -48,7 +51,11 @@ export default function Membership() {
         <Reveal as="h1" className="page-title">Welcome to SIGMA, {done.full_name.split(' ')[0]}.</Reveal>
         <Reveal as="p" className="muted" delay={100}>Your membership ID is ready. Drag the card to give it a swing.</Reveal>
         <Reveal delay={200}><LanyardCard d={done} /></Reveal>
-        <button className="link-btn" onClick={() => { setDone(null); setF(blank); setFile(null); setPreview(''); }}>Register another member</button>
+       <div className="row actions">
+      <button className="btn" onClick={() => downloadId(done)}><Download size={16} /> Download ID</button>
+      <button className="btn" onClick={() => router.push('/')}>Done</button>
+      <button className="link-btn" onClick={() => { setDone(null); setF(blank); setFile(null); setPreview(''); }}>Register another member</button>
+      </div>
       </div>
     );
 

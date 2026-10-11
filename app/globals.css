@@ -289,3 +289,18 @@ a{color:inherit;text-decoration:none}
 }
 @keyframes sfade{0%{opacity:0;transform:translateY(-3px)}50%{opacity:1}100%{opacity:0;transform:translateY(3px)}}
 @media(prefers-reduced-motion:reduce){.scrollhint svg{animation:none}}
+
+.actions{justify-content:center;margin-top:8px}
+.btn svg{vertical-align:-3px;margin-right:6px}
+.admin-top{margin:8px 0 28px}
+.mh{margin:12px 0 18px;gap:16px;flex-wrap:wrap;align-items:center}
+.mh .search{font:inherit;color:var(--ink);padding:10px 16px;border:1px solid var(--line);border-radius:999px;background:var(--bg);min-width:240px}
+.mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:20px}
+.mcard{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--tint)}
+.mcard img{width:100%;aspect-ratio:1;object-fit:cover;display:block}
+.mbody{flex:1;display:flex;flex-direction:column;gap:2px;padding:14px;font-size:.88rem;color:var(--muted)}
+.mbody b{color:var(--ink);font-size:1rem}
+.mbody code{margin-top:6px;color:var(--maroon);font-weight:600;letter-spacing:.05em}
+.mdl{display:flex;align-items:center;justify-content:center;gap:8px;border:0;border-top:1px solid var(--line);background:none;color:var(--maroon);padding:12px;font:inherit;cursor:pointer;transition:background .2s,color .2s}
+.mdl:hover{background:var(--btn);color:#fff}
+[data-theme="dark"] .mcard{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.12)}
