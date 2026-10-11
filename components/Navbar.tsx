@@ -4,13 +4,15 @@ import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Logo from './Logo';
 import ThemeToggle from './ThemeToggle';
+import { supabase } from '@/lib/supabase';
 
-const links = [['/', 'Home'], ['/events', 'Events'], ['/membership', 'Membership']];
+const base = [['/', 'Home'], ['/events', 'Events'], ['/membership', 'Membership']];
 
 export default function Navbar() {
   const path = usePathname();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -19,7 +21,14 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
- const atTop = !scrolled && !open;
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => setIsAdmin(!!data.session));
+    const { data } = supabase.auth.onAuthStateChange((_e, s) => setIsAdmin(!!s));
+    return () => data.subscription.unsubscribe();
+  }, []);
+
+  const links = isAdmin ? [...base, ['/admin', 'Members']] : base;
+  const atTop = !scrolled && !open;
 
   return (
     <header className={atTop ? 'nav nav-top' : 'nav'}>

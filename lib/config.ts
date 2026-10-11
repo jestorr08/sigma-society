@@ -27,5 +27,5 @@ export const OFFICERS = [
   { role: 'Committee Head, Events & Programs', name: 'Jorge Russel Leyva', photo: '/officers/jorge.jpg' },
   { role: 'Committee Head, Academic Training', name: 'Martina Pantaleon', photo: '/officers/martina.jpg' },
   { role: 'Committee Head, Technical & IT', name: 'Jester Araneta', photo: '/officers/jester.jpg' },
-  { role: 'Committee Head, Membership Outreach', name: 'Lyza Tesoro', photo: '/officers/lyza.jpg' },
+  { role: 'Committee Head, Membership Outreach', name: 'Lyza Tesorero', photo: '/officers/lyza.jpg' },
 ];

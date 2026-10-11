@@ -6,11 +6,13 @@ import Reveal from '@/components/Reveal';
 import { useRouter } from 'next/navigation';
 import { Camera, ChevronDown, Download } from 'lucide-react';
 import { downloadId } from '@/lib/idCard';
+import PrivacyModal from '@/components/PrivacyModal';
 
-const blank = { full_name: '', student_id: '', program: '', year_level: '1st Year', section: '', email: '', phone: '' };
+const blank = { full_name: '', student_id: '', gender: '', program: '', year_level: '1st Year', section: '', phone: '' };
 
 export default function Membership() {
   const router = useRouter();
+  const [agreed, setAgreed] = useState(false);
   const [f, setF] = useState(blank);
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState('');
@@ -39,11 +41,10 @@ export default function Membership() {
     if (up.error) { setBusy(false); return setErr(up.error.message); }
     const photo_url = supabase.storage.from('member-photos').getPublicUrl(path).data.publicUrl;
     const id_code = `SIG-${new Date().getFullYear()}-${id.slice(0, 6).toUpperCase()}`;
-    const { error } = await supabase.from('members').insert({ id, id_code, ...f, photo_url });
+    const { error } = await supabase.from('members').insert({ id, id_code, ...f, photo_url, consent_at: new Date().toISOString() });
     setBusy(false);
     if (error) return setErr(error.code === '23505' ? 'This student ID is already registered.' : error.message);
-    setDone({ ...f, id_code, photo_url: preview });
-  }
+    setDone({ ...f, id, id_code, photo_url: preview });  }
 
   if (done)
     return (
@@ -51,35 +52,46 @@ export default function Membership() {
         <Reveal as="h1" className="page-title">Welcome to SIGMA, {done.full_name.split(' ')[0]}.</Reveal>
         <Reveal as="p" className="muted" delay={100}>Your membership ID is ready. Drag the card to give it a swing.</Reveal>
         <Reveal delay={200}><LanyardCard d={done} /></Reveal>
-       <div className="row actions">
-      <button className="btn" onClick={() => downloadId(done)}><Download size={16} /> Download ID</button>
-      <button className="btn" onClick={() => router.push('/')}>Done</button>
-      <button className="link-btn" onClick={() => { setDone(null); setF(blank); setFile(null); setPreview(''); }}>Register another member</button>
-      </div>
+        <div className="row actions">
+          <button className="btn" onClick={() => downloadId(done)}><Download size={16} /> Download ID</button>
+          <button className="btn" onClick={() => router.push('/')}>Done</button>
+          <button className="link-btn" onClick={() => { setDone(null); setF(blank); setFile(null); setPreview(''); setAgreed(false); }}>Register another member</button>
+        </div>
       </div>
     );
 
   return (
     <div className="wrap section narrow">
+      {!agreed && <PrivacyModal onAgree={() => setAgreed(true)} onDecline={() => router.push('/')} />}
       <Reveal as="h1" className="page-title">Become a member</Reveal>
       <Reveal as="p" className="muted" delay={100}>Fill in your details. Your ID is generated as soon as you submit.</Reveal>
       <Reveal delay={200}>
         <form onSubmit={submit} className="form">
           <label>Full name<input required value={f.full_name} onChange={set('full_name')} /></label>
           <label>Student ID number<input required value={f.student_id} onChange={set('student_id')} /></label>
-          <label>Program / course<input required placeholder="e.g. BSIT" value={f.program} onChange={set('program')} /></label>
-          <div className="row2">
-               <label>Year level
-           <span className="selwrap">
-            <select value={f.year_level} onChange={set('year_level')}>
-               {['1st Year', '2nd Year', '3rd Year', '4th Year', '5th Year'].map((y) => <option key={y}>{y}</option>)}
-           </select>
-          <ChevronDown size={18} />
+          <label>Gender
+            <span className="selwrap">
+              <select required value={f.gender} onChange={set('gender')}>
+                <option value="" disabled>Select</option>
+                <option>Male</option>
+                <option>Female</option>
+                <option>Prefer not to say</option>
+              </select>
+              <ChevronDown size={18} />
             </span>
           </label>
+          <label>Program / course<input required placeholder="e.g. BSIT" value={f.program} onChange={set('program')} /></label>
+          <div className="row2">
+            <label>Year level
+              <span className="selwrap">
+                <select value={f.year_level} onChange={set('year_level')}>
+                  {['1st Year', '2nd Year', '3rd Year', '4th Year', '5th Year'].map((y) => <option key={y}>{y}</option>)}
+                </select>
+                <ChevronDown size={18} />
+              </span>
+            </label>
             <label>Section<input value={f.section} onChange={set('section')} /></label>
           </div>
-          <label>Email<input type="email" required value={f.email} onChange={set('email')} /></label>
           <label>Mobile number<input type="tel" value={f.phone} onChange={set('phone')} /></label>
           <div className="filepick">
             <span>Photo (max 2MB)</span>

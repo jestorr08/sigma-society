@@ -46,10 +46,11 @@ export default function AdminLogin() {
       <h1 className="page-title">Admin</h1>
       {signedIn ? (
         <>
-          <div className="row admin-top">
+         <div className="row admin-top">
             <Link href="/events" className="btn">Go to Events</Link>
-            <button className="link-btn" onClick={() => supabase.auth.signOut()}>Sign out</button>
-          </div>
+            <Link href="/admin/preview" className="btn">Preview ID</Link>
+          <button className="link-btn" onClick={() => supabase.auth.signOut()}>Sign out</button>
+         </div>
           <div className="row-between mh">
             <h2>Members ({members.length})</h2>
             <input className="search" placeholder="Search name or student ID" value={q} onChange={(e) => setQ(e.target.value)} />
