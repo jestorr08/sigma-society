@@ -3,6 +3,7 @@ import { useEffect, useState, FormEvent } from 'react';
 import { supabase } from '@/lib/supabase';
 import { ImagePlus } from 'lucide-react';
 import Reveal from '@/components/Reveal';
+import ScrollHint from '@/components/ScrollHint';
 
 type Ev = {
   id: string; title: string; event_date: string | null; kind: 'upcoming' | 'past';
@@ -86,6 +87,7 @@ export default function Events() {
 
   return (
     <div className="wrap section">
+      <ScrollHint />
       <div className="row-between">
         <Reveal as="h1" className="page-title">Events</Reveal>
         {isAdmin && <button className="link-btn" onClick={() => setPanel(!panel)}>Manage events</button>}

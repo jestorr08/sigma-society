@@ -3,6 +3,7 @@ import { ORG, OFFICERS } from '@/lib/config';
 import EyeLogo from '@/components/EyeLogo';
 import Reveal from '@/components/Reveal';
 import RecentEvents from '@/components/RecentEvents';
+import ScrollHint from '@/components/ScrollHint';
 
 function Avatar({ name, photo }: { name?: string; photo?: string }) {
   // eslint-disable-next-line @next/next/no-img-element
@@ -12,6 +13,7 @@ function Avatar({ name, photo }: { name?: string; photo?: string }) {
 export default function Home() {
   return (
     <>
+    <ScrollHint />
 <section className="hero">
  
   <div className="wrap hero-in">
