@@ -1,5 +1,5 @@
 'use client';
-import { useState, FormEvent, ChangeEvent } from 'react';
+import { useState, useEffect, FormEvent, ChangeEvent } from 'react';
 import { supabase } from '@/lib/supabase';
 import LanyardCard, { IdData } from '@/components/LanyardCard';
 import Reveal from '@/components/Reveal';
@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { Camera, ChevronDown, Download } from 'lucide-react';
 import { downloadId } from '@/lib/idCard';
 import PrivacyModal from '@/components/PrivacyModal';
+import Link from 'next/link';
 
 const blank = { full_name: '', student_id: '', gender: '', program: '', year_level: '1st Year', section: '', phone: '' };
 
@@ -19,6 +20,19 @@ export default function Membership() {
   const [err, setErr] = useState('');
   const [busy, setBusy] = useState(false);
   const [done, setDone] = useState<IdData | null>(null);
+
+  const [status, setStatus] = useState<'loading' | 'open' | 'closed'>('loading');
+const [closedMsg, setClosedMsg] = useState('');
+
+useEffect(() => {
+  supabase.from('site_settings').select('membership_open, closed_message').eq('id', 1).single()
+    .then(({ data }) => {
+      setStatus(data && data.membership_open === false ? 'closed' : 'open');
+      setClosedMsg(data?.closed_message ?? '');
+    });
+}, []);
+
+
 
   const set = (k: keyof typeof blank) => (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
     setF({ ...f, [k]: e.target.value });
@@ -43,7 +57,7 @@ export default function Membership() {
     const id_code = `SIG-${new Date().getFullYear()}-${id.slice(0, 6).toUpperCase()}`;
     const { error } = await supabase.from('members').insert({ id, id_code, ...f, photo_url, consent_at: new Date().toISOString() });
     setBusy(false);
-    if (error) return setErr(error.code === '23505' ? 'This student ID is already registered.' : error.message);
+   if (error) return setErr(error.code === '23505' ? 'This student ID is already registered.' : error.code === '42501' ? 'Registration has just been closed.' : error.message);
     setDone({ ...f, id, id_code, photo_url: preview });  }
 
   if (done)
@@ -59,6 +73,17 @@ export default function Membership() {
         </div>
       </div>
     );
+
+    if (status === 'loading') return <div className="wrap section narrow"><p className="muted">Loading…</p></div>;
+
+if (status === 'closed')
+  return (
+    <div className="wrap section narrow center">
+      <Reveal as="h1" className="page-title">Registration is closed</Reveal>
+      <Reveal as="p" className="muted" delay={100}>{closedMsg || 'Membership registration is not available right now. Please check back soon.'}</Reveal>
+      <Reveal delay={200}><Link href="/" className="btn">Back to home</Link></Reveal>
+    </div>
+  );
 
   return (
     <div className="wrap section narrow">

@@ -12,6 +12,7 @@ export default function Footer() {
         </div>
         <nav>
           <Link href="/">Home</Link>
+          <Link href="/about">About</Link>
           <Link href="/events">Events</Link>
           <Link href="/membership">Membership</Link>
         </nav>

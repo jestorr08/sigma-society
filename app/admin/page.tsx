@@ -8,6 +8,9 @@ import type { IdData } from '@/components/LanyardCard';
 
 type Member = IdData & { id: string; created_at: string };
 
+
+
+
 export default function AdminLogin() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -15,6 +18,9 @@ export default function AdminLogin() {
   const [signedIn, setSignedIn] = useState<boolean | null>(null);
   const [members, setMembers] = useState<Member[]>([]);
   const [q, setQ] = useState('');
+  const [open, setOpen] = useState(true);
+  const [closedMsg, setClosedMsg] = useState('');
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => setSignedIn(!!data.session));
@@ -24,6 +30,8 @@ export default function AdminLogin() {
 
   useEffect(() => {
     if (!signedIn) return;
+    supabase.from('site_settings').select('membership_open, closed_message').eq('id', 1).single()
+     .then(({ data }) => { if (data) { setOpen(data.membership_open); setClosedMsg(data.closed_message ?? ''); } });
     supabase.from('members').select('*').order('created_at', { ascending: false })
       .then(({ data, error }) => {
         if (error) setMsg(error.message);
@@ -41,6 +49,17 @@ export default function AdminLogin() {
     `${m.full_name} ${m.student_id} ${m.id_code}`.toLowerCase().includes(q.toLowerCase())
   );
 
+     async function saveSettings(nextOpen: boolean) {
+  setSaving(true);
+  const { error } = await supabase.from('site_settings')
+    .update({ membership_open: nextOpen, closed_message: closedMsg || null, updated_at: new Date().toISOString() })
+    .eq('id', 1);
+  setSaving(false);
+  if (error) return setMsg(error.message);
+  setOpen(nextOpen); setMsg('');
+}
+
+
   return (
     <div className={signedIn ? 'wrap section' : 'wrap section narrow'}>
       <h1 className="page-title">Admin</h1>
@@ -51,6 +70,22 @@ export default function AdminLogin() {
             <Link href="/admin/preview" className="btn">Preview ID</Link>
           <button className="link-btn" onClick={() => supabase.auth.signOut()}>Sign out</button>
          </div>
+            <div className="setbox">
+  <div className="setbox-head">
+    <div>
+      <b>Membership registration</b>
+      <span className={open ? 'pillstat on' : 'pillstat off'}>{open ? 'Open' : 'Closed'}</span>
+    </div>
+    <button className="btn" disabled={saving} onClick={() => saveSettings(!open)}>
+      {open ? 'Close registration' : 'Open registration'}
+    </button>
+  </div>
+  <label className="setbox-msg">Message shown when closed (optional)
+    <input value={closedMsg} onChange={(e) => setClosedMsg(e.target.value)} placeholder="Registration is currently closed. Please check back soon." />
+  </label>
+  {!open && <button className="link-btn" disabled={saving} onClick={() => saveSettings(false)}>Save message</button>}
+</div>
+
           <div className="row-between mh">
             <h2>Members ({members.length})</h2>
             <input className="search" placeholder="Search name or student ID" value={q} onChange={(e) => setQ(e.target.value)} />

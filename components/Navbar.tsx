@@ -6,7 +6,7 @@ import Logo from './Logo';
 import ThemeToggle from './ThemeToggle';
 import { supabase } from '@/lib/supabase';
 
-const base = [['/', 'Home'], ['/events', 'Events'], ['/membership', 'Membership']];
+const base = [['/', 'Home'], ['/about', 'About'], ['/events', 'Events'], ['/membership', 'Membership']];
 
 export default function Navbar() {
   const path = usePathname();

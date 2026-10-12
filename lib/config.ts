@@ -5,12 +5,11 @@ export const ORG = {
   logo: '/officers/logo (2).png', 
   about:
     'SIGMA Society is a student organization for learners who enjoy numbers, data, and the ideas behind them. We turn classroom statistics and mathematics into projects, contests, and community.',
-  goals: [
-    'Make statistics and mathematics approachable for every student.',
-    'Build practical skills through workshops, competitions, and data projects.',
-    'Grow a supportive community of future analysts, teachers, and researchers.',
-  ],
+  mission: 'The Statistical Innovation and Growth in Mathematical Advancement Society (SIGMA) is committed to empowering students through excellence in statistics and mathematics. We strive to develop analytical thinking, leadership, and research skills by promoting innovation, collaboration, and ethical practices. Through academic community engagement and meaningful learning experiences, we prepare our members to become competent, responsible, and active contributors to the college-wide community.',
+vision: 'The Statistical Innovation and Growth in Mathematical Advancement Society (SIGMA) envisions a college-wide community of passionate learners and future professionals who excel in statistics and mathematics, inspire innovation, embrace lifelong learning, and use their knowledge to make a positive impact on the university and the community.',
+objectives: 'The objectives of the organization are to help students improve their knowledge, critical thinking, and problem-solving skills. It also aims to strengthen their abilities in mathematics, statistics, and data analysis while encouraging research and teamwork. Through seminars, workshops, competitions, partnerships, and career development programs, the organization supports students achieving academic success and preparing for their future careers.',
    adviser: { name: 'Prof. Jandee Dolores', title: 'Organization Adviser', photo: '/officers/jandee.jpg' },
+   accreditation: { image: '/Certificates/Acreddit.png', caption: 'Official accreditation of SIGMA Society.' },
 };
 
 

@@ -40,9 +40,10 @@ export default function RecentEvents() {
 }, []);
 
   const n = items.length;
-  if (n === 0) return null;
-  const moving = n >= 3;
-  const loop = moving ? [...items, ...items, ...items, ...items] : items;
+if (n === 0) return null;
+const copies = Math.max(2, 2 * Math.ceil(1000 / (n * 268)));
+const loop = Array.from({ length: copies }, () => items).flat();
+const duration = (copies / 2) * n * 8; // about 8 seconds per card
 
   return (
     <Reveal as="section" className="section wrap">
@@ -50,8 +51,8 @@ export default function RecentEvents() {
         <h2 className="sm-h">Recent events</h2>
         <Link href="/events" className="link-btn">See all events</Link>
       </div>
-      <div className={moving ? 'mq' : 'mq still'}>
-        <div className="mq-track">
+      <div className="mq">
+       <div className="mq-track" style={{ animationDuration: `${duration}s` }}>
           {loop.map((ev, k) => <Card key={`${ev.id}-${k}`} ev={ev} dup={k >= n} />)}
         </div>
       </div>
